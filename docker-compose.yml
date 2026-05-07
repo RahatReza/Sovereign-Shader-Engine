@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  rsm-gateway:
+    build: .
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - NODE_ENV=production
+  rsm-interface:
+    image: node:20-slim
+    working_dir: /app/frontend
+    volumes:
+      - ./frontend/interface:/app/frontend
+    ports:
+      - "5173:5173"
+    command: "npm run dev -- --host"

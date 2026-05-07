@@ -1,0 +1,9 @@
+node_modules/
+dist/
+target/
+.vercel/
+.env
+*.log
+.DS_Store
+frontend/interface/node_modules/
+core/kernel/math_engine/target/
