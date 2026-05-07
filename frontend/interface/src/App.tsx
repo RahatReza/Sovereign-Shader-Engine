@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Editor, { DiffEditor } from '@monaco-editor/react';
 import { SovereignRenderer } from './components/SovereignRenderer';
 import { Zap, Shield, Activity, BarChart } from 'lucide-react';
+import { injectShader } from './components/SovereignInjector';
 import './App.css';
 
 export default function App() {
@@ -33,12 +34,50 @@ export default function App() {
         setTimeout(() => setIsCopied(false), 2000);
     };
 
+    const [deploymentMode, setDeploymentMode] = useState<'fullscreen' | 'hero' | 'card'>('fullscreen');
+    
+    const handleDeploy = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !refined) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const html = event.target?.result as string;
+            const injectedHtml = injectShader(html, refined, deploymentMode);
+            
+            // Trigger Download
+            const blob = new Blob([injectedHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sovereign_${file.name}`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert(`Sovereign Deployment Complete: sovereign_${file.name} is ready.`);
+        };
+        reader.readAsText(file);
+    };
+
     return (
         <div className="sovereign-app">
             <nav className="sovereign-nav">
-                <div className="brand"><Shield size={20} color="#00ff41"/> RSM EXECUTIVE HUD v50.8</div>
-                <div className="status-badge">SYSTEM: {viewMode === 'edit' ? 'STANDBY' : 'QUANTUM SEALED'}</div>
+                <div className="brand"><Shield size={20} color="#00ff41"/> RSM EXECUTIVE HUD v60.0</div>
+                <div className="status-badge">SYSTEM: {viewMode === 'edit' ? 'STANDBY' : 'GHOST SEALED'}</div>
                 <div className="nav-actions">
+                    <select 
+                        value={deploymentMode} 
+                        onChange={(e) => setDeploymentMode(e.target.value as any)}
+                        className="mode-select"
+                    >
+                        <option value="fullscreen">MODE: FULLSCREEN</option>
+                        <option value="hero">MODE: HERO BANNER</option>
+                        <option value="card">MODE: INTERACTIVE CARD</option>
+                    </select>
+                    <label className="btn-secondary">
+                        INJECT HTML
+                        <input type="file" accept=".html" onChange={handleDeploy} style={{display: 'none'}} />
+                    </label>
                     {viewMode === 'refine' && (
                         <button onClick={() => setViewMode('edit')} className="btn-secondary">BACK TO EDITOR</button>
                     )}

@@ -15,9 +15,11 @@ The engine autonomously detects hardware tiers (Mobile vs. Desktop) and dynamica
 - **Polynomial Trig**: Replaces expensive transcendental functions (`sin`/`cos`) with high-speed polynomial approximations.
 - **Register-Reuse Optimization**: Minimizes memory stalls and heat throttling on mobile SoCs.
 
-### 3. Universal Hardware Bridge
-- **Auto-Mapping**: Native support for Shadertoy uniforms (`iTime`, `iResolution`, `iMouse`, `iChannel0-3`).
-- **Safe Entry Wrapper**: Prevents driver conflicts by isolating `mainImage` entry points.
+### 4. Universal Ghost Injection (v1.6.0)
+The platform now includes a "One-Click Injector" that can merge refined shaders into any third-party HTML file (WordPress, Shopify, etc.).
+- **Smart-Anchor Heuristics**: Automatically finds the best injection point (Hero/Header) if no tag is present.
+- **CSS Isolation**: Uses atomic shielding to prevent layout collisions with the parent site.
+- **Atomic Resizing**: Integrated `ResizeObserver` for perfect responsiveness on mobile rotation.
 
 ---
 
